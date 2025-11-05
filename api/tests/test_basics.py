@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import *
+from api.models import *
 
 # -------------------
 # Test de los modelos
@@ -130,3 +130,5 @@ class UserModelTestCase(TestCase):
         self.assertIsNotNone(user.created_at)
         
         self.assertEqual(user,User.objects.get(pk=userId))
+
+
