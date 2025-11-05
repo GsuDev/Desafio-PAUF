@@ -4,6 +4,7 @@ from django.urls import reverse
 from api.models import *
 from api.serializers import *
 
+
 class UserEndpointsTestCase(APITestCase):
     def setUp(self):
         self.user1 = User.objects.create(name="Messi", email="messi@example.com")
@@ -85,3 +86,115 @@ class UserEndpointsTestCase(APITestCase):
 
         # 2️⃣ Comprobamos que devuelve el usuario pedido
         self.assertFalse(User.objects.filter(id=self.user1.id).exists())
+
+class CardEndpointsTestCase(APITestCase):
+    def setUp(self):
+        # Creamos 2 cartas de prueba
+        self.card1 = Card.objects.create(
+            name="Lionel Messi",
+            country="Argentina",
+            club="Inter Miami",
+            league="MLS",
+            position="ED",
+            pace=85,
+            shooting=92,
+            passing=91,
+            dribbling=95,
+            defending=38,
+            physical=65,
+        )
+
+        self.card2 = Card.objects.create(
+            name="Cristiano Ronaldo",
+            country="Portugal",
+            club="Al Nassr",
+            league="Saudi Pro League",
+            position="DC",
+            pace=84,
+            shooting=93,
+            passing=82,
+            dribbling=88,
+            defending=35,
+            physical=77,
+        )
+
+    def test_list_cards(self):
+        url = reverse('card-list-create')
+        response = self.client.get(url,format='json')
+
+        # 1️⃣ Comprobamos que devuelve un 200 OK
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # 2️⃣ Comprobamos que se listan todos los cartas
+        cards = Card.objects.all()
+        serializer = CardSerializer(cards,many=True)    #Pasamos a dict todos los cartas de la BD
+        self.assertEqual(response.data,serializer.data)  #Comprobamos los cartas del setUp
+
+    def test_create_card(self):
+        data = {
+            "name": "Kylian Mbappé",
+            "country": "Francia",
+            "club": "PSG",
+            "league": "Ligue 1",
+            "position": "DC",
+            "pace": 97,
+            "shooting": 89,
+            "passing": 80,
+            "dribbling": 92,
+            "defending": 36,
+            "physical": 78,
+        }
+        url = reverse('card-list-create')
+        response = self.client.post(url, data, format='json')
+
+        # 1️⃣ Comprobamos que devuelve 201 CREATED
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # 2️⃣ Comprobamos que el carta se creó en la BD
+        self.assertEqual(Card.objects.count(), 3)
+
+    def test_retrieve_card(self):
+        url = reverse('card-retrieve-update-destroy', args=[self.card1.id])
+        response = self.client.get(url)
+
+        # 1️⃣ Comprobamos que devuelve un 200 OK
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # 2️⃣ Comprobamos que devuelve la carta correcta
+        self.assertEqual(response.data['name'], "Lionel Messi")
+
+    def test_update_card(self):
+        data = {
+            "name": "Leo Messi",
+            "country": "Argentina",
+            "club": "Inter Miami",
+            "league": "MLS",
+            "position": "ED",
+            "pace": 86,
+            "shooting": 93,
+            "passing": 92,
+            "dribbling": 96,
+            "defending": 38,
+            "physical": 66,
+        }
+        url = reverse('card-retrieve-update-destroy', args=[self.card1.id])
+        response = self.client.put(url, data, format='json')
+        cards = Card.objects.all()
+        serializer = CardSerializer(cards,many=True)
+
+        # 1️⃣ Comprobamos que devuelve un 200 OK
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # 2️⃣ Comprobamos que la carta se actualizó en la BD
+        self.assertEqual(response.data,serializer.data[0])
+
+    
+    def test_destroy_card(self):
+        url = reverse('card-retrieve-update-destroy', args=[self.card1.id])
+        response = self.client.delete(url)
+
+        # 1️⃣ Comprobamos que devuelve un 204 NO CONTENT
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        # 2️⃣ Comprobamos que la carta se eliminó de la BD
+        self.assertFalse(Card.objects.filter(id=self.card1.id).exists())
