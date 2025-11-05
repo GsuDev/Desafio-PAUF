@@ -4,14 +4,30 @@ from django.db import models
 
 
 class Card(models.Model):
-    # Personal data
+    POSICIONES = [
+        ("POR", "Portero"),
+        ("LD", "Lateral Derecho"),
+        ("DFC", "Defensa Central"),
+        ("LI", "Lateral Izquierdo"),
+        ("MCD", "Medio Centro Defensivo"),
+        ("MC", "Medio Centro"),
+        ("MCO", "Medio Centro Ofensivo"),
+        ("MI", "Medio Izquierdo"),
+        ("MD", "Medio Derecho"),
+        ("SD", "Segundo Delantero"),
+        ("EI", "Extremo Izquierdo"),
+        ("ED", "Extremo Derecho"),
+        ("DC", "Delantero Centro"),
+    ]
+    
+    # Datos básicos
     name = models.CharField(max_length=100)
     country = models.CharField(max_length=50)
     club = models.CharField(max_length=100)
     league = models.CharField(max_length=100)
-    position = models.CharField(max_length=10)
+    position = models.CharField(choices=POSICIONES)
 
-    # Statistics
+    # Estadísticas
     pace = models.IntegerField()
     shooting = models.IntegerField()
     passing = models.IntegerField()
@@ -19,7 +35,7 @@ class Card(models.Model):
     defending = models.IntegerField()
     physical = models.IntegerField()
 
-    # Other fields
+    # Otros campos
     active = models.BooleanField(default=True)
     overall_rating = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -29,7 +45,7 @@ class Card(models.Model):
 
     # TODO - HU5
     def calculate_overall_rating(self):
-        pass
+        return 50
 
     def save(self, *args, **kwargs):
         self.overall_rating = self.calculate_overall_rating()
@@ -48,6 +64,7 @@ class Team(models.Model):
 class User(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
+    password = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     team = models.OneToOneField(Team, on_delete=models.SET_NULL, null=True, blank=True)
 
