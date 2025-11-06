@@ -196,5 +196,5 @@ class CardEndpointsTestCase(APITestCase):
         # 1️⃣ Comprobamos que devuelve un 204 NO CONTENT
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        # 2️⃣ Comprobamos que la carta se eliminó de la BD
-        self.assertFalse(Card.objects.filter(id=self.card1.id).exists())
+        # 2️⃣ Comprobamos que la carta se eliminó (soft delete) de la BD
+        self.assertFalse(Card.objects.get(id=self.card1.id).active)
