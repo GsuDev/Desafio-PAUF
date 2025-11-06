@@ -1,0 +1,201 @@
+### 📋 Obtener todos los usuarios
+GET http://127.0.0.1:8000/users/
+Accept: application/json
+
+###
+
+### ➕ Crear un usuario nuevo
+POST http://127.0.0.1:8000/users/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Lionel Messi",
+  "email": "messi@psg.com",
+  "password": "goat123"
+}
+
+###
+
+### 📄 Obtener un usuario específico (por id)
+GET http://127.0.0.1:8000/users/1/
+Accept: application/json
+
+###
+
+### ✏️ Actualizar un usuario (PUT - reemplazo total)
+PUT http://127.0.0.1:8000/users/2/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Lionel Messi Jr",
+  "email": "messi@intermiami.com",
+  "password": "goat1234",
+  "team": {
+      "name": "Inter Miami",
+      "cards": [
+  {
+    "id": 3,
+    "name": "Cristiano Ronaldo",
+    "country": "Portugal",
+    "club": "Al Nassr",
+    "league": "Saudi Pro League",
+    "position": "DC",
+    "pace": 84,
+    "shooting": 93,
+    "passing": 82,
+    "dribbling": 88,
+    "defending": 35,
+    "physical": 77,
+    "active": false,
+    "overall_rating": 50,
+    "created_at": "2025-11-05T20:07:41.186863Z"
+  },
+  {
+    "id": 4,
+    "name": "Lionel Messi",
+    "country": "Argentina",
+    "club": "Inter Miami",
+    "league": "MLS",
+    "position": "ED",
+    "pace": 85,
+    "shooting": 92,
+    "passing": 91,
+    "dribbling": 95,
+    "defending": 38,
+    "physical": 65,
+    "active": true,
+    "overall_rating": 50,
+    "created_at": "2025-11-05T20:16:35.351288Z"
+  },
+  {
+    "id": 5,
+    "name": "Lionel Messi",
+    "country": "Argentina",
+    "club": "Inter Miami",
+    "league": "MLS",
+    "position": "ED",
+    "pace": 85,
+    "shooting": 92,
+    "passing": 91,
+    "dribbling": 95,
+    "defending": 38,
+    "physical": 65,
+    "active": true,
+    "overall_rating": 50,
+    "created_at": "2025-11-05T20:16:35.884032Z"
+  }
+]
+  }
+}
+
+###
+
+### 🔧 Actualizar parcialmente un usuario (PATCH)
+PATCH http://127.0.0.1:8000/users/1/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "password": "nuevopass"
+}
+
+###
+
+### ❌ Eliminar un usuario
+DELETE http://127.0.0.1:8000/users/1/
+Accept: application/json
+
+### --------------------------------------------------------------------
+
+### 📋 Obtener todas las cartas
+GET http://127.0.0.1:8000/cards/
+Accept: application/json
+
+###
+
+### ➕ Crear una carta nueva
+POST http://127.0.0.1:8000/cards/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Lionel Messi",
+  "country": "Argentina",
+  "club": "Inter Miami",
+  "league": "MLS",
+  "position": "ED",
+  "pace": 85,
+  "shooting": 92,
+  "passing": 91,
+  "dribbling": 95,
+  "defending": 38,
+  "physical": 65
+}
+
+###
+
+### ➕ Crear otra carta
+POST http://127.0.0.1:8000/cards/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Cristiano Ronaldo",
+  "country": "Portugal",
+  "club": "Al Nassr",
+  "league": "Saudi Pro League",
+  "position": "DC",
+  "pace": 84,
+  "shooting": 93,
+  "passing": 82,
+  "dribbling": 88,
+  "defending": 35,
+  "physical": 77
+}
+
+###
+
+### 📄 Obtener una carta específica (por id)
+GET http://127.0.0.1:8000/cards/3/
+Accept: application/json
+
+###
+
+### ✏️ Actualizar completamente una carta (PUT)
+PUT http://127.0.0.1:8000/cards/1/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Leo Messi",
+  "country": "Argentina",
+  "club": "Inter Miami",
+  "league": "MLS",
+  "position": "ED",
+  "pace": 86,
+  "shooting": 93,
+  "passing": 92,
+  "dribbling": 96,
+  "defending": 38,
+  "physical": 66
+}
+
+###
+
+### 🔧 Actualizar parcialmente una carta (PATCH)
+PATCH http://127.0.0.1:8000/cards/1/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "club": "FC Barcelona",
+  "league": "La Liga"
+}
+
+###
+
+### ❌ Eliminar una carta
+DELETE http://127.0.0.1:8000/cards/3/
+Accept: application/json
