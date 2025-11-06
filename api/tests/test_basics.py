@@ -11,29 +11,35 @@ class CardModelTestCase(TestCase):
     def setUp(self):
         # Carta de ejemplo para el resto de tests
         self.card = Card.objects.create(
-            name="Cristiano Ronaldo",
-            country="Portugal",
-            club="Al Nassr",
-            league="Saudi Pro League",
-            position="ST",
+            name="Neymar da Silva Santos Júnior",
+            country="Brazil",
+            club="FC Barcelona",
+            league="Spain Primera Division",
+            position="EI",
             pace=90,
-            shooting=93,
-            passing=82,
-            dribbling=88,
-            defending=35,
-            physical=85,
+            shooting=80,
+            passing=72,
+            dribbling=92,
+            defending=30,
+            physical=57,
+            diving=9,
+            reflexes=11,
+            handling=9,
+            positioning=15,
+            kicking=15,
+            speed=90,
         )
 
     def test_create_card(self):
         # Se comprueba que la carta de ejemplo se ha creado bien
         self.assertEqual(Card.objects.count(), 1)
-        self.assertEqual(self.card.name, "Cristiano Ronaldo")
+        self.assertEqual(self.card.name, "Neymar da Silva Santos Júnior")
         self.assertTrue(self.card.active)
         self.assertIsNotNone(self.card.created_at)
 
     def test_card_string_representation(self):
         # Pruebo el toString
-        self.assertEqual(str(self.card), "Cristiano Ronaldo (ST)")
+        self.assertEqual(str(self.card), "Neymar da Silva Santos Júnior (EI)")
 
     def test_card_can_be_deactivated(self):
         # Compruebo que funciona el borrado lógico
@@ -65,30 +71,42 @@ class TeamModelTestCase(TestCase):
 
         # Cartas de ejemplo
         card1 = Card.objects.create(
-            name="Messi",
-            country="Argentina",
-            club="Inter Miami",
-            league="MLS",
-            position="ST",
+            name="Neymar da Silva Santos Júnior",
+            country="Brazil",
+            club="FC Barcelona",
+            league="Spain Primera Division",
+            position="EI",
             pace=90,
-            shooting=93,
-            passing=92,
-            dribbling=95,
-            defending=38,
-            physical=65,
+            shooting=80,
+            passing=72,
+            dribbling=92,
+            defending=30,
+            physical=57,
+            diving=9,
+            reflexes=11,
+            handling=9,
+            positioning=15,
+            kicking=15,
+            speed=90,
         )
         card2 = Card.objects.create(
-            name="Ramos",
-            country="Spain",
-            club="Sevilla FC",
-            league="LaLiga",
-            position="CB",
-            pace=70,
-            shooting=60,
-            passing=75,
-            dribbling=65,
-            defending=90,
-            physical=85,
+            name="Neymar da Silva Santos Júnior",
+            country="Brazil",
+            club="FC Barcelona",
+            league="Spain Primera Division",
+            position="EI",
+            pace=90,
+            shooting=80,
+            passing=72,
+            dribbling=92,
+            defending=30,
+            physical=57,
+            diving=9,
+            reflexes=11,
+            handling=9,
+            positioning=15,
+            kicking=15,
+            speed=90,
         )
 
         # Añado las cartas al equipo
@@ -130,5 +148,3 @@ class UserModelTestCase(TestCase):
         self.assertIsNotNone(user.created_at)
         
         self.assertEqual(user,User.objects.get(pk=userId))
-
-

@@ -11,14 +11,14 @@ class UserEndpointsTestCase(APITestCase):
         self.user2 = User.objects.create(name="Cristiano", email="cr7@example.com")
 
     def test_create_user(self):
-        url = reverse('user-list-create')  
+        url = reverse("user-list-create")
         data = {
             "name": "Test User",
             "email": "testuser@example.com",
-            "password": "testpassword"
+            "password": "testpassword",
         }
 
-        response = self.client.post(url, data, format='json')
+        response = self.client.post(url, data, format="json")
 
         # 1️⃣ Comprobamos que devuelve 201 CREATED
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -31,121 +31,146 @@ class UserEndpointsTestCase(APITestCase):
         self.assertIsNone(user.team)
 
         # 4️⃣ Comprobamos que la respuesta JSON no tenga team
-        self.assertIsNone(response.data.get('team'))
-    
+        self.assertIsNone(response.data.get("team"))
+
     def test_list_users(self):
-        url = reverse('user-list-create')
-        response = self.client.get(url,format='json')
+        url = reverse("user-list-create")
+        response = self.client.get(url, format="json")
 
         # 1️⃣ Comprobamos que devuelve un 200 OK
-        self.assertEqual(response.status_code,status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # 2️⃣ Comprobamos que se listan todos los usuarios
         users = User.objects.all()
-        serializer = UserSerializer(users,many=True)    #Pasamos a dict todos los usuarios de la BD
-        self.assertEqual(response.data,serializer.data)  #Comprobamos los usuarios del setUp
-
+        serializer = UserSerializer(
+            users, many=True
+        )  # Pasamos a dict todos los usuarios de la BD
+        self.assertEqual(
+            response.data, serializer.data
+        )  # Comprobamos los usuarios del setUp
 
     def test_retrieve_users(self):
-        url = reverse('user-retrieve-update-destroy',args=[self.user1.id])
-        response = self.client.get(url,format='json')
+        url = reverse("user-retrieve-update-destroy", args=[self.user1.id])
+        response = self.client.get(url, format="json")
         users = User.objects.all()
-        serializer = UserSerializer(users,many=True)
+        serializer = UserSerializer(users, many=True)
 
         # 1️⃣ Comprobamos que devuelve un 200 OK
-        self.assertEqual(response.status_code,status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # 2️⃣ Comprobamos que devuelve el usuario pedido
-        self.assertEqual(response.data,serializer.data[0])
+        self.assertEqual(response.data, serializer.data[0])
 
     def test_update_users(self):
-        url = reverse('user-retrieve-update-destroy',args=[self.user1.id])
+        url = reverse("user-retrieve-update-destroy", args=[self.user1.id])
         data = {
             "name": "Test User",
             "email": "testuser@example.com",
-            "password": "testpassword"
+            "password": "testpassword",
         }
-        response = self.client.put(url,data,format='json')
+        response = self.client.put(url, data, format="json")
         users = User.objects.all()
-        serializer = UserSerializer(users,many=True)
+        serializer = UserSerializer(users, many=True)
 
         # 1️⃣ Comprobamos que devuelve un 200 OK
-        self.assertEqual(response.status_code,status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # 2️⃣ Comprobamos que devuelve el usuario pedido
-        self.assertEqual(response.data,serializer.data[0])
-        #self.assertEqual(response.data,data)       #No va porque el PUT no devuelve la ID, pero es normal
-
+        self.assertEqual(response.data, serializer.data[0])
+        # self.assertEqual(response.data,data)       #No va porque el PUT no devuelve la ID, pero es normal
 
     def test_destroy_users(self):
-        url = reverse('user-retrieve-update-destroy',args=[self.user1.id])
-        response = self.client.delete(url,format='json')
+        url = reverse("user-retrieve-update-destroy", args=[self.user1.id])
+        response = self.client.delete(url, format="json")
 
         # 1️⃣ Comprobamos que devuelve un 204 NO CONTENT
-        self.assertEqual(response.status_code,status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
         # 2️⃣ Comprobamos que devuelve el usuario pedido
         self.assertFalse(User.objects.filter(id=self.user1.id).exists())
+
 
 class CardEndpointsTestCase(APITestCase):
     def setUp(self):
         # Creamos 2 cartas de prueba
         self.card1 = Card.objects.create(
-            name="Lionel Messi",
-            country="Argentina",
-            club="Inter Miami",
-            league="MLS",
-            position="ED",
-            pace=85,
-            shooting=92,
-            passing=91,
-            dribbling=95,
-            defending=38,
-            physical=65,
+            name="Neymar da Silva Santos Júnior",
+            country="Brazil",
+            club="FC Barcelona",
+            league="Spain Primera Division",
+            position="EI",
+            pace=90,
+            shooting=80,
+            passing=72,
+            dribbling=92,
+            defending=30,
+            physical=57,
+            diving=9,
+            reflexes=11,
+            handling=9,
+            positioning=15,
+            kicking=15,
+            speed=90,
         )
 
         self.card2 = Card.objects.create(
-            name="Cristiano Ronaldo",
-            country="Portugal",
-            club="Al Nassr",
-            league="Saudi Pro League",
-            position="DC",
-            pace=84,
-            shooting=93,
-            passing=82,
-            dribbling=88,
-            defending=35,
-            physical=77,
+            name="Neymar da Silva Santos Júnior",
+            country="Brazil",
+            club="FC Barcelona",
+            league="Spain Primera Division",
+            position="EI",
+            pace=90,
+            shooting=80,
+            passing=72,
+            dribbling=92,
+            defending=30,
+            physical=57,
+            diving=9,
+            reflexes=11,
+            handling=9,
+            positioning=15,
+            kicking=15,
+            speed=90,
         )
 
     def test_list_cards(self):
-        url = reverse('card-list-create')
-        response = self.client.get(url,format='json')
+        url = reverse("card-list-create")
+        response = self.client.get(url, format="json")
 
         # 1️⃣ Comprobamos que devuelve un 200 OK
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # 2️⃣ Comprobamos que se listan todos los cartas
         cards = Card.objects.all()
-        serializer = CardSerializer(cards,many=True)    #Pasamos a dict todos los cartas de la BD
-        self.assertEqual(response.data,serializer.data)  #Comprobamos los cartas del setUp
+        serializer = CardSerializer(
+            cards, many=True
+        )  # Pasamos a dict todos los cartas de la BD
+        self.assertEqual(
+            response.data, serializer.data
+        )  # Comprobamos los cartas del setUp
 
     def test_create_card(self):
         data = {
-            "name": "Kylian Mbappé",
-            "country": "Francia",
-            "club": "PSG",
-            "league": "Ligue 1",
-            "position": "DC",
-            "pace": 97,
-            "shooting": 89,
-            "passing": 80,
+            "name": "Neymar da Silva Santos Júnior",
+            "country": "Brazil",
+            "club": "FC Barcelona",
+            "league": "Spain Primera Division",
+            "position": "EI",
+            "pace": 90,
+            "shooting": 80,
+            "passing": 72,
             "dribbling": 92,
-            "defending": 36,
-            "physical": 78,
+            "defending": 30,
+            "physical": 57,
+            "diving": 9,
+            "reflexes": 11,
+            "handling": 9,
+            "positioning": 15,
+            "kicking": 15,
+            "speed": 90,
         }
-        url = reverse('card-list-create')
-        response = self.client.post(url, data, format='json')
+        url = reverse("card-list-create")
+        response = self.client.post(url, data, format="json")
 
         # 1️⃣ Comprobamos que devuelve 201 CREATED
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -154,43 +179,48 @@ class CardEndpointsTestCase(APITestCase):
         self.assertEqual(Card.objects.count(), 3)
 
     def test_retrieve_card(self):
-        url = reverse('card-retrieve-update-destroy', args=[self.card1.id])
+        url = reverse("card-retrieve-update-destroy", args=[self.card1.id])
         response = self.client.get(url)
 
         # 1️⃣ Comprobamos que devuelve un 200 OK
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # 2️⃣ Comprobamos que devuelve la carta correcta
-        self.assertEqual(response.data['name'], "Lionel Messi")
+        self.assertEqual(response.data["name"], "Neymar da Silva Santos Júnior")
 
     def test_update_card(self):
         data = {
-            "name": "Leo Messi",
-            "country": "Argentina",
-            "club": "Inter Miami",
-            "league": "MLS",
-            "position": "ED",
-            "pace": 86,
-            "shooting": 93,
-            "passing": 92,
-            "dribbling": 96,
-            "defending": 38,
-            "physical": 66,
+            "name": "Neymar da Silva Santos Júnior",
+            "country": "Brazil",
+            "club": "FC Barcelona",
+            "league": "Spain Primera Division",
+            "position": "EI",
+            "pace": 90,
+            "shooting": 80,
+            "passing": 72,
+            "dribbling": 92,
+            "defending": 30,
+            "physical": 57,
+            "diving": 9,
+            "reflexes": 11,
+            "handling": 9,
+            "positioning": 15,
+            "kicking": 15,
+            "speed": 90,
         }
-        url = reverse('card-retrieve-update-destroy', args=[self.card1.id])
-        response = self.client.put(url, data, format='json')
+        url = reverse("card-retrieve-update-destroy", args=[self.card1.id])
+        response = self.client.put(url, data, format="json")
         cards = Card.objects.all()
-        serializer = CardSerializer(cards,many=True)
+        serializer = CardSerializer(cards, many=True)
 
         # 1️⃣ Comprobamos que devuelve un 200 OK
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # 2️⃣ Comprobamos que la carta se actualizó en la BD
-        self.assertEqual(response.data,serializer.data[0])
+        self.assertEqual(response.data, serializer.data[0])
 
-    
     def test_destroy_card(self):
-        url = reverse('card-retrieve-update-destroy', args=[self.card1.id])
+        url = reverse("card-retrieve-update-destroy", args=[self.card1.id])
         response = self.client.delete(url)
 
         # 1️⃣ Comprobamos que devuelve un 204 NO CONTENT

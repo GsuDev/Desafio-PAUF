@@ -5,7 +5,7 @@ class CardSerializer(serializers.ModelSerializer):
     class Meta:
         # Indico el modelo
         model = Card
-        
+
         # Indico los campos que deben pasarse a JSON
         fields = [
             "id",
@@ -20,17 +20,36 @@ class CardSerializer(serializers.ModelSerializer):
             "dribbling",
             "defending",
             "physical",
+            "diving",
+            "reflexes",
+            "handling",
+            "positioning",
+            "kicking",
+            "speed",
             "active",
             "overall_rating",
             "created_at",
         ]
-        
+
         # Estos campos se mandan en el GET pero no se pueden recibir en el POST/PUT/PATCH
         read_only_fields = ["id", "overall_rating", "created_at"]
 
     def validate(self, data):
         """Ensure stats are within a reasonable range."""
-        stats = ["pace", "shooting", "passing", "dribbling", "defending", "physical"]
+        stats = [
+            "pace",
+            "shooting",
+            "passing",
+            "dribbling",
+            "defending",
+            "physical",
+            "diving",
+            "reflexes",
+            "handling",
+            "positioning",
+            "kicking",
+            "speed",
+        ]
         for stat in stats:
             value = data.get(stat)
             if value is not None and (value < 0 or value > 99):

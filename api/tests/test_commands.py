@@ -1,3 +1,6 @@
+import io
+import json
+import tempfile
 from django.core.management import call_command
 from django.test import TestCase
 from api.models import *
@@ -16,3 +19,11 @@ class CommandsTests(TestCase):
 
         # Comprueba que ninguno tiene equipo
         self.assertTrue(all(user.team is None for user in User.objects.all()))
+class CardCommandsTests(TestCase):
+
+    def test_load_cards_command_creates_cards(self):
+        # Ejecutar el comando
+        call_command("load_cards")
+
+        # Verificar que se crearon las cartas
+        self.assertEqual(Card.objects.count(), 600)
