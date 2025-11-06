@@ -34,6 +34,12 @@ class Card(models.Model):
     dribbling = models.IntegerField()
     defending = models.IntegerField()
     physical = models.IntegerField()
+    diving = models.IntegerField()
+    reflexes = models.IntegerField()
+    handling = models.IntegerField()
+    positioning = models.IntegerField()
+    kicking = models.IntegerField()
+    speed = models.IntegerField()
 
     # Otros campos
     active = models.BooleanField(default=True)
