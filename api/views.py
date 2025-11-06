@@ -33,6 +33,16 @@ class CardRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 
     def destroy(self, request, *args, **kwargs):
         card = self.get_object()
+
+        # Comprobamos si la carta está en algún equipo
+        is_used = card.teams.exists()  
+        # De ser así no la borra
+        if is_used:
+            return Response(
+                {"detail": "Cannot delete card because it is used in a team."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+            
         card.active = False
         card.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
