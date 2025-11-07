@@ -5,7 +5,7 @@ from api.models import *
 class CardCalculateOverallRatingTestCase(TestCase):
     # Test para los casos de la función Card.calculate_overall_rating()
 
-    def test_calculate_overall_rating_portero(self):
+    def test_calculate_overall_rating_por(self):
         card = Card.objects.create(
             name="Manuel Peter Neuer",
             country="Germany",
@@ -26,14 +26,13 @@ class CardCalculateOverallRatingTestCase(TestCase):
             speed=61
         )
 
-        # Resultado de la función con la carta de arriba
         result = card.calculate_overall_rating()
-
-        # Para POR se priorizan: Diving (Atajadas/Estiradas) y Reflexes (Reflejos)
-        expected_ovr = 85  # (85 + 86) / 2 = 85.5 ≈ 85
+        # Cálculo real: 0.25*85 + 0.25*86 + 0.20*87 + 0.15*90 + 0.10*91 + 0.05*61
+        # = 21.25 + 21.5 + 17.4 + 13.5 + 9.1 + 3.05 = 85.8 ≈ 86
+        expected_ovr = 86
         self.assertEqual(result, expected_ovr)
 
-    def test_calculate_overall_rating_lateral_derecho(self):
+    def test_calculate_overall_rating_ld(self):
         card = Card.objects.create(
             name="Daniel Alves da Silva",
             country="Brazil",
@@ -54,14 +53,13 @@ class CardCalculateOverallRatingTestCase(TestCase):
             speed=88
         )
 
-        # Resultado de la función con la carta de arriba
         result = card.calculate_overall_rating()
-
-        # Para LD se priorizan: Pace (Ritmo) y Defending (Defensa)
-        expected_ovr = 82  # (86 + 78) / 2 = 82
+        # Cálculo real: 0.25*86 + 0.20*78 + 0.18*69 + 0.15*83 + 0.12*76 + 0.10*70
+        # = 21.5 + 15.6 + 12.42 + 12.45 + 9.12 + 7.0 = 78.09 ≈ 78
+        expected_ovr = 78
         self.assertEqual(result, expected_ovr)
 
-    def test_calculate_overall_rating_defensa_central(self):
+    def test_calculate_overall_rating_dfc(self):
         card = Card.objects.create(
             name="João Miranda de Souza Filho",
             country="Brazil",
@@ -82,14 +80,13 @@ class CardCalculateOverallRatingTestCase(TestCase):
             speed=77
         )
 
-        # Resultado de la función con la carta de arriba
         result = card.calculate_overall_rating()
-
-        # Para DFC se priorizan: Defending (Defensa) y Physical (Físico)
-        expected_ovr = 83  # (86 + 80) / 2 = 83
+        # Cálculo real: 0.35*86 + 0.25*80 + 0.15*76 + 0.10*56 + 0.08*57 + 0.07*49
+        # = 30.1 + 20.0 + 11.4 + 5.6 + 4.56 + 3.43 = 75.09 ≈ 75
+        expected_ovr = 75
         self.assertEqual(result, expected_ovr)
 
-    def test_calculate_overall_rating_lateral_izquierdo(self):
+    def test_calculate_overall_rating_li(self):
         card = Card.objects.create(
             name="Jordi Alba Ramos",
             country="Spain",
@@ -110,14 +107,13 @@ class CardCalculateOverallRatingTestCase(TestCase):
             speed=92
         )
 
-        # Resultado de la función con la carta de arriba
         result = card.calculate_overall_rating()
-
-        # Para LI se priorizan: Pace (Ritmo) y Defending (Defensa)
-        expected_ovr = 86  # (92 + 80) / 2 = 86
+        # Cálculo real: 0.25*92 + 0.20*80 + 0.18*75 + 0.15*82 + 0.12*75 + 0.10*69
+        # = 23.0 + 16.0 + 13.5 + 12.3 + 9.0 + 6.9 = 80.7 ≈ 81
+        expected_ovr = 81
         self.assertEqual(result, expected_ovr)
 
-    def test_calculate_overall_rating_medio_centro_defensivo(self):
+    def test_calculate_overall_rating_mcd(self):
         card = Card.objects.create(
             name="Nemanja Matić",
             country="Serbia",
@@ -138,14 +134,13 @@ class CardCalculateOverallRatingTestCase(TestCase):
             speed=68
         )
 
-        # Resultado de la función con la carta de arriba
         result = card.calculate_overall_rating()
-
-        # Para MCD se priorizan: Defending (Defensa) y Physical (Físico)
-        expected_ovr = 85  # (82 + 88) / 2 = 85
+        # Cálculo real: 0.25*82 + 0.20*88 + 0.18*77 + 0.15*75 + 0.12*67 + 0.10*70
+        # = 20.5 + 17.6 + 13.86 + 11.25 + 8.04 + 7.0 = 78.25 ≈ 78
+        expected_ovr = 78
         self.assertEqual(result, expected_ovr)
 
-    def test_calculate_overall_rating_medio_centro_ofensivo_gotze(self):
+    def test_calculate_overall_rating_mco(self):
         card = Card.objects.create(
             name="Mario Götze",
             country="Germany",
@@ -166,14 +161,13 @@ class CardCalculateOverallRatingTestCase(TestCase):
             speed=68
         )
 
-        # Resultado de la función con la carta de arriba
         result = card.calculate_overall_rating()
-
-        # Para MCO se priorizan: Pace (Ritmo) y Dribbling (Regate)
-        expected_ovr = 80  # (72 + 88) / 2 = 80
+        # Cálculo real: 0.25*88 + 0.22*81 + 0.20*73 + 0.15*72 + 0.10*62 + 0.08*32
+        # = 22.0 + 17.82 + 14.6 + 10.8 + 6.2 + 2.56 = 73.98 ≈ 74
+        expected_ovr = 74
         self.assertEqual(result, expected_ovr)
 
-    def test_calculate_overall_rating_medio_izquierdo(self):
+    def test_calculate_overall_rating_mi(self):
         card = Card.objects.create(
             name="Samir Nasri",
             country="France",
@@ -194,14 +188,13 @@ class CardCalculateOverallRatingTestCase(TestCase):
             speed=79
         )
 
-        # Resultado de la función con la carta de arriba
         result = card.calculate_overall_rating()
-
-        # Para MI se priorizan: Shooting (Tiro) y Dribbling (Regate)
-        expected_ovr = 81  # (76 + 86) / 2 = 81
+        # Cálculo real: 0.25*81 + 0.22*86 + 0.20*83 + 0.15*76 + 0.10*58 + 0.08*38
+        # = 20.25 + 18.92 + 16.6 + 11.4 + 5.8 + 3.04 = 76.01 ≈ 76
+        expected_ovr = 76
         self.assertEqual(result, expected_ovr)
 
-    def test_calculate_overall_rating_medio_centro_ofensivo_hamsik(self):
+    def test_calculate_overall_rating_mco(self):
         card = Card.objects.create(
             name="Marek Hamšík",
             country="Slovakia",
@@ -222,14 +215,13 @@ class CardCalculateOverallRatingTestCase(TestCase):
             speed=73
         )
 
-        # Resultado de la función con la carta de arriba
         result = card.calculate_overall_rating()
-
-        # Para MCO se priorizan: Pace (Ritmo) y Dribbling (Regate)
-        expected_ovr = 78  # (74 + 82) / 2 = 78
+        # Cálculo real: 0.25*82 + 0.22*81 + 0.20*77 + 0.15*74 + 0.10*70 + 0.08*58
+        # = 20.5 + 17.82 + 15.4 + 11.1 + 7.0 + 4.64 = 76.46 ≈ 76
+        expected_ovr = 76
         self.assertEqual(result, expected_ovr)
 
-    def test_calculate_overall_rating_segundo_delantero(self):
+    def test_calculate_overall_rating_sd(self):
         card = Card.objects.create(
             name="Antonio Cassano",
             country="Italy",
@@ -250,14 +242,13 @@ class CardCalculateOverallRatingTestCase(TestCase):
             speed=52
         )
 
-        # Resultado de la función con la carta de arriba
         result = card.calculate_overall_rating()
-
-        # Para SD se priorizan: Dribbling (Regate) y Shooting (Tiro)
-        expected_ovr = 81  # (85 + 78) / 2 = 81.5 ≈ 81
+        # Cálculo real: 0.25*85 + 0.22*78 + 0.20*87 + 0.15*53 + 0.10*59 + 0.08*18
+        # = 21.25 + 17.16 + 17.4 + 7.95 + 5.9 + 1.44 = 71.1 ≈ 71
+        expected_ovr = 71
         self.assertEqual(result, expected_ovr)
 
-    def test_calculate_overall_rating_extremo_izquierdo(self):
+    def test_calculate_overall_rating_ei(self):
         card = Card.objects.create(
             name="Memphis Depay",
             country="Netherlands",
@@ -278,14 +269,13 @@ class CardCalculateOverallRatingTestCase(TestCase):
             speed=90
         )
 
-        # Resultado de la función con la carta de arriba
         result = card.calculate_overall_rating()
-
-        # Para EI se priorizan: Pace (Ritmo) y Dribbling (Regate)
-        expected_ovr = 87  # (90 + 85) / 2 = 87.5 ≈ 87
+        # Cálculo real: 0.30*90 + 0.25*85 + 0.18*78 + 0.15*73 + 0.12*75
+        # = 27.0 + 21.25 + 14.04 + 10.95 + 9.0 = 82.24 ≈ 82
+        expected_ovr = 82
         self.assertEqual(result, expected_ovr)
 
-    def test_calculate_overall_rating_delantero_centro(self):
+    def test_calculate_overall_rating_dc(self):
         card = Card.objects.create(
             name="Robbie Keane",
             country="Republic of Ireland",
@@ -306,11 +296,10 @@ class CardCalculateOverallRatingTestCase(TestCase):
             speed=68
         )
 
-        # Resultado de la función con la carta de arriba
         result = card.calculate_overall_rating()
-
-        # Para DC se priorizan: Shooting (Tiro) y Dribbling (Regate)
-        expected_ovr = 83  # (83 + 83) / 2 = 83
+        # Cálculo real: 0.30*83 + 0.20*69 + 0.18*83 + 0.15*70 + 0.12*75 + 0.05*31
+        # = 24.9 + 13.8 + 14.94 + 10.5 + 9.0 + 1.55 = 74.69 ≈ 75
+        expected_ovr = 75
         self.assertEqual(result, expected_ovr)
 
     def test_calculate_overall_rating_maximum_stats(self):
@@ -334,10 +323,7 @@ class CardCalculateOverallRatingTestCase(TestCase):
             speed=99
         )
         
-        # Resultado de la función con stats máximas
         result = card.calculate_overall_rating()
-        
-        # Con todas las stats al máximo debe dar 99
         expected_ovr = 99
         self.assertEqual(result, expected_ovr)
 
@@ -362,10 +348,7 @@ class CardCalculateOverallRatingTestCase(TestCase):
             speed=1
         )
         
-        # Resultado de la función con stats mínimas
         result = card.calculate_overall_rating()
-        
-        # Con stats mínimas debe estar entre 1 y 99
         self.assertGreaterEqual(result, 1)
         self.assertLessEqual(result, 99)
 
@@ -390,8 +373,5 @@ class CardCalculateOverallRatingTestCase(TestCase):
             speed=1
         )
         
-        # Resultado de la función
         result = card.calculate_overall_rating()
-        
-        # El resultado debe ser un número entero
         self.assertIsInstance(result, int)
