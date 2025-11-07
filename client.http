@@ -199,3 +199,23 @@ Accept: application/json
 ### ❌ Eliminar una carta
 DELETE http://127.0.0.1:8000/cards/3/
 Accept: application/json
+
+### Crear un equipo para un usuario existente
+POST http://localhost:8000/users/teams/3
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Team Alpha"
+}
+
+###
+
+### Crear otro equipo para el usuario con id=2
+POST http://localhost:8000/users/2/teams/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Los Galácticos"
+}

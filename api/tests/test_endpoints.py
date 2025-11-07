@@ -89,6 +89,19 @@ class UserEndpointsTestCase(APITestCase):
         # 2️⃣ Comprobamos que devuelve el usuario pedido
         self.assertFalse(User.objects.filter(id=self.user1.id).exists())
 
+    def test_create_team_for_user(self):
+        url = reverse("user-team-create", args=[self.user1.id])
+        data = { "name": "Test Ticles Team" }
+        response = self.client.post(url, data, format="json")
+
+        # 1 Comprobamos que devuelve un 204 NO CONTENT
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # 2 Comprobamos que le ha asociado el equipo
+        self.assertIsNotNone(User.objects.get(id=self.user1.id).team)
+
+        # 3 Comprobamos que devuelve
+        self.assertEqual(response.data["team"]["name"], data["name"])
 
 class CardEndpointsTestCase(APITestCase):
     def setUp(self):
