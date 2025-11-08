@@ -1,3 +1,4 @@
+from django.core.management import call_command
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.urls import reverse
@@ -9,6 +10,8 @@ class UserEndpointsTestCase(APITestCase):
     def setUp(self):
         self.user1 = User.objects.create(name="Messi", email="messi@example.com")
         self.user2 = User.objects.create(name="Cristiano", email="cr7@example.com")
+        self.user3 = User.objects.create(name="Raul", email="raul7@example.com")
+        call_command("load_cards", limit=30)
 
     def test_create_user(self):
         url = reverse("user-list-create")
@@ -90,7 +93,7 @@ class UserEndpointsTestCase(APITestCase):
         self.assertFalse(User.objects.filter(id=self.user1.id).exists())
 
     def test_create_team_for_user(self):
-        url = reverse("user-team-create", args=[self.user1.id])
+        url = reverse("user-team-view", args=[self.user1.id])
         data = { "name": "Test Ticles Team" }
         response = self.client.post(url, data, format="json")
 
@@ -102,6 +105,72 @@ class UserEndpointsTestCase(APITestCase):
 
         # 3 Comprobamos que devuelve
         self.assertEqual(response.data["team"]["name"], data["name"])
+
+        # 4 Comprobamos que no acepta mas de 25 de cartas
+        card_ids = ids = list(Card.objects.values_list("id", flat=True))
+        data = {"name": "Test Ticles Team", "cards": card_ids }
+        response = self.client.post(url, data, format="json", args=[self.user2.id])
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # 5 Comprobamos que no acepta duplicados de cartas
+        data = {"name": "Test Ticles Team", "cards": [1,1,2,2,3]}
+        response = self.client.post(url, data, format="json", args=[self.user3.id])
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        
+    def test_patch_team_for_user(self):
+        # Primero le creamos un equipo al user1
+        url = reverse("user-team-view", args=[self.user1.id])
+        data = {"name": "Initial Team", "card_ids": [c.id for c in Card.objects.all()[:5]]}
+        self.client.post(url, data, format="json")
+
+        # Ahora hacemos PATCH para actualizar nombre y cartas
+        update_data = {
+            "name": "Updated Team",
+            "card_ids": [c.id for c in Card.objects.all()[5:10]]  # otras cartas
+        }
+        response = self.client.patch(url, update_data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        team = User.objects.get(id=self.user1.id).team
+        self.assertEqual(team.name, update_data["name"])
+        self.assertListEqual(list(team.cards.values_list("id", flat=True)), update_data["card_ids"])
+
+        # Comprobamos límite de 25 cartas
+        too_many_cards = {"card_ids": [c.id for c in Card.objects.all()[:26]]}
+        response = self.client.patch(url, too_many_cards, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # Comprobamos duplicados
+        duplicate_cards = {"card_ids": [1,1,2,2,3]}
+        response = self.client.patch(url, duplicate_cards, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+def test_delete_team_for_user(self):
+    # Primero le creamos un equipo al user2
+    url = reverse("user-team-view", args=[self.user2.id])
+    data = {"name": "Team To Delete", "card_ids": [c.id for c in Card.objects.all()[:5]]}
+    self.client.post(url, data, format="json")
+
+    # DELETE
+    response = self.client.delete(url)
+    self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    # Comprobamos que user2 ya no tiene equipo
+    self.assertIsNone(User.objects.get(id=self.user2.id).team)
+
+    # Comprobamos que el equipo fue eliminado
+    self.assertFalse(Team.objects.filter(name="Team To Delete").exists())
+
+    # DELETE en usuario sin equipo → 400
+    url_no_team = reverse("user-team-view", args=[self.user3.id])
+    response = self.client.delete(url_no_team)
+    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    
+    
+
 
 class CardEndpointsTestCase(APITestCase):
     def setUp(self):

@@ -1,6 +1,3 @@
-import io
-import json
-import tempfile
 from django.core.management import call_command
 from django.test import TestCase
 from api.models import *

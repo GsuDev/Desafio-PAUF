@@ -200,22 +200,37 @@ Accept: application/json
 DELETE http://127.0.0.1:8000/cards/3/
 Accept: application/json
 
-### Crear un equipo para un usuario existente
-POST http://localhost:8000/users/teams/3
+### --------------------------------------------------------------------
+
+### Gestión de equipos
+
+### 🟢 Obtener el equipo de un usuario
+GET http://localhost:8000/users/1/team/
+Accept: application/json
+
+
+### 🟡 Crear un equipo para el usuario (solo si no tiene uno)
+POST http://localhost:8000/users/4/team/
 Content-Type: application/json
 Accept: application/json
 
 {
-  "name": "Team Alpha"
+  "name": "Los Galácticos",
+  "card_ids": [1, 2, 3]
 }
 
-###
 
-### Crear otro equipo para el usuario con id=2
-POST http://localhost:8000/users/2/teams/
+### 🔵 Actualizar el equipo del usuario (nombre o cartas)
+PATCH http://localhost:8000/users/1/team/
 Content-Type: application/json
 Accept: application/json
 
 {
-  "name": "Los Galácticos"
+  "name": "Los Invencibles",
+  "card_ids": [2, 5, 8]
 }
+
+
+### 🔴 (Opcional) Eliminar el equipo del usuario
+DELETE http://localhost:8000/users/4/team/
+Accept: application/json

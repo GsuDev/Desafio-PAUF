@@ -21,5 +21,5 @@ urlpatterns = [
         views.UserRetrieveUpdateDestroy.as_view(),
         name="team-retrieve-update-destroy",
     ),
-    path("users/teams/<int:pk>", views.UserTeamCreate.as_view(), name="user-team-create"),
+    path("users/<int:pk>/team/", views.UserTeamView.as_view(), name="user-team-view"),
 ]
