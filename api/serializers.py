@@ -60,8 +60,8 @@ class CardSerializer(serializers.ModelSerializer):
 
 
 class TeamSerializer(serializers.ModelSerializer):
-    # Indicamos el serializer de las cartas del equipo
-    cards = CardSerializer(many=True, read_only=True)
+    # Solo lectura de las cartas (se mostrarán solo las activas)
+    cards = serializers.SerializerMethodField()
     card_ids = serializers.PrimaryKeyRelatedField(
         many=True,
         queryset=Card.objects.all(),
@@ -71,25 +71,25 @@ class TeamSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        # Indico el modelo
         model = Team
-
-        # Indico los campos que deben pasarse a JSON
         fields = ["id", "name", "created_at", "cards", "card_ids"]
-
-        # Estos campos se mandan en el GET pero no se pueden recibir en el POST/PUT/PATCH
         read_only_fields = ["id", "created_at"]
 
-    # Override del update para poder pasar solo las ids al modificar las cartas que tiene un equipo
+    def get_cards(self, obj):
+        """
+        Devuelve solo las cartas activas (active=True)
+        """
+        active_cards = obj.cards.filter(active=True)
+        return CardSerializer(active_cards, many=True).data
+
     def update(self, instance, validated_data):
-        # Handle updating cards if provided
+        # Update del equipo y sus cartas
         cards = validated_data.pop("cards", None)
         instance.name = validated_data.get("name", instance.name)
         instance.save()
         if cards is not None:
             instance.cards.set(cards)
         return instance
-
 
 class UserSerializer(serializers.ModelSerializer):
     # Indicamos el serializer del equipo del usuario

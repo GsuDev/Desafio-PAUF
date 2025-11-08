@@ -112,13 +112,21 @@ class UserTeamView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        # Verificar que el equipo no tenga más de 25 cartas
+        # Verificar que el equipo no tenga más de 25 cartas ni menos de 23
         cards_data = serializer.validated_data.get("cards", [])
-        if len(cards_data) > 25:
+        if len(cards_data) != 0 and len(cards_data) not in range(23,26):
             return Response(
                 {"error": "Un equipo no puede tener más de 25 cartas."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+        elif len(cards_data) != 0:
+            # LIMITES DE JUGADORES POR POSICION
+            position_limits = self.check_position_limits(cards_data)
+            if position_limits["success"] == False:
+                return Response(
+                    {"error": position_limits["message"]},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
         # Evitar duplicados en las cartas
         card_ids = [c.id for c in cards_data]
@@ -127,8 +135,6 @@ class UserTeamView(generics.GenericAPIView):
                 {"error": "El equipo contiene cartas duplicadas."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        # TODO HU8 Lugar reservado para límites por tipo de jugador
-        # self.check_position_limits(cards_data)
 
         team = serializer.save()
 
@@ -157,7 +163,7 @@ class UserTeamView(generics.GenericAPIView):
 
         # Verificar que el equipo no tenga más de 25 cartas
         cards_data = serializer.validated_data.get("cards", [])
-        if len(cards_data) > 25:
+        if len(cards_data) not in range(23,26):
             return Response(
                 {"error": "Un equipo no puede tener más de 25 cartas."},
                 status=status.HTTP_400_BAD_REQUEST,
@@ -170,8 +176,14 @@ class UserTeamView(generics.GenericAPIView):
                 {"error": "El equipo contiene cartas duplicadas."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        # TODO HU8 Lugar reservado para límites por tipo de jugador
-        # self.check_position_limits(cards_data)
+            
+        # LIMITES DE JUGADORES POR POSICION
+        position_limits = self.check_position_limits(cards_data)
+        if position_limits["success"] == False:
+            return Response(
+                {"error": position_limits["message"]},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         team = serializer.save()
 
@@ -206,3 +218,62 @@ class UserTeamView(generics.GenericAPIView):
         return Response(
             status=status.HTTP_204_NO_CONTENT,
         )
+
+    # Método preparado para implementar límites por tipo de jugador
+    def check_position_limits(self, cards):
+        """
+        Aquí se podrá controlar que haya un máximo de jugadores por posición:
+        - Entre 2 y 3 porteros
+        - Entre 8 y 10 defensas
+        - Entre 6 y 9 centrocampistas
+        - Entre 5 y 6 delanteros
+        """
+        
+        gk = 0
+        df = 0
+        mc = 0
+        st = 0
+        success = True
+        message = ""
+        
+        
+                
+        for card in cards:
+            pos = card.position
+            
+            if pos == "POR":
+                gk += 1
+            elif pos in ["DFC","LI","LD"]:
+                df += 1
+            elif pos in ["MC","MCD","MCO","MI","MD"]:
+                mc += 1
+            elif pos in ["EI","ED","DC","SD"]:
+                st += 1
+            
+        print(f"Defensas {df}")
+        print(f"MedioCentro {mc}")
+        print(f"Delantero {st}")
+        print(f"Portero {gk}")
+        
+        if gk not in range(2,4):
+            success = False
+            message = "Tiene que tener entre 2 y 3 porteros"
+            
+        if df not in range(8,11):
+            success = False
+            message = "Tiene que tener entre 8 y 10 defensas"
+            
+        if mc not in range(6,10):
+            success = False
+            message = "Tiene que tener entre 6 y 9 centrocampistas"
+            
+        if st not in range(5,7):
+            success = False
+            message = "Tiene que tener entre 5 y 6 delantero"
+            
+        
+        return {
+            "success": success,
+            "message": message
+        }
+            

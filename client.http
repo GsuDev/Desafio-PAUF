@@ -18,7 +18,7 @@ Accept: application/json
 ###
 
 ### 📄 Obtener un usuario específico (por id)
-GET http://127.0.0.1:8000/users/1/
+GET http://127.0.0.1:8000/users/13/
 Accept: application/json
 
 ###
@@ -197,7 +197,7 @@ Accept: application/json
 ###
 
 ### ❌ Eliminar una carta
-DELETE http://127.0.0.1:8000/cards/3/
+DELETE http://127.0.0.1:8000/cards/345/
 Accept: application/json
 
 ### --------------------------------------------------------------------
@@ -205,32 +205,32 @@ Accept: application/json
 ### Gestión de equipos
 
 ### 🟢 Obtener el equipo de un usuario
-GET http://localhost:8000/users/1/team/
+GET http://localhost:8000/users/13/team/
 Accept: application/json
 
 
 ### 🟡 Crear un equipo para el usuario (solo si no tiene uno)
-POST http://localhost:8000/users/4/team/
+POST http://localhost:8000/users/13/team/
 Content-Type: application/json
 Accept: application/json
 
 {
   "name": "Los Galácticos",
-  "card_ids": [1, 2, 3]
+  "card_ids": [42, 53, 51, 15, 22, 43, 45, 64, 69, 79, 89, 12, 34, 97, 33, 113, 10, 44, 50, 65, 1, 2, 11, 48, 180]
 }
 
 
 ### 🔵 Actualizar el equipo del usuario (nombre o cartas)
-PATCH http://localhost:8000/users/1/team/
+PATCH http://localhost:8000/users/13/team/
 Content-Type: application/json
 Accept: application/json
 
 {
   "name": "Los Invencibles",
-  "card_ids": [2, 5, 8]
+  "card_ids":  [42, 53, 51, 15, 22, 43, 64, 69, 79, 89, 12, 34, 97, 33, 113, 10, 44, 50, 65, 1, 2, 11, 48, 180]
 }
 
 
 ### 🔴 (Opcional) Eliminar el equipo del usuario
-DELETE http://localhost:8000/users/4/team/
+DELETE http://localhost:8000/users/13/team/
 Accept: application/json
