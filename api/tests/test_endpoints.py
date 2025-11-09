@@ -11,7 +11,7 @@ class UserEndpointsTestCase(APITestCase):
         self.user1 = User.objects.create(name="Messi", email="messi@example.com")
         self.user2 = User.objects.create(name="Cristiano", email="cr7@example.com")
         self.user3 = User.objects.create(name="Raul", email="raul7@example.com")
-        call_command("load_cards", limit=30)
+        call_command("load_cards", limit=180)
 
     def test_create_user(self):
         url = reverse("user-list-create")
@@ -118,7 +118,7 @@ class UserEndpointsTestCase(APITestCase):
         response = self.client.post(url, data, format="json", args=[self.user3.id])
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        
+
     def test_patch_team_for_user(self):
         # Primero le creamos un equipo al user1
         url = reverse("user-team-view", args=[self.user1.id])
@@ -133,24 +133,23 @@ class UserEndpointsTestCase(APITestCase):
         }
         response = self.client.patch(url, update_data, format="json")
 
-        # LO CenTImos PHRAN no enkontramos al uzuario
+        # 1 Comprobamos el codigo 200 ok
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         
-        #self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # team = User.objects.get(id=self.user1.id).team
-        # self.assertEqual(team.name, update_data["name"])
-        # self.assertListEqual(list(team.cards.values_list("id", flat=True)), update_data["card_ids"])
+        # 2 Comprobamos que ha modificado las cartas
+        team = User.objects.get(id=self.user1.id).team
+        self.assertEqual(team.name, update_data["name"])
+        self.assertSetEqual(set(team.cards.values_list("id", flat=True)), set(update_data["card_ids"])) # Set para que no importe el orden
 
-        # Comprobamos límite de 25 cartas
-        # too_many_cards = {"card_ids": [c.id for c in Card.objects.all()[:26]]}
-        # response = self.client.patch(url, too_many_cards, format="json")
-        # self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        # 3 Comprobamos límite de 25 cartas
+        too_many_cards = {"card_ids": [c.id for c in Card.objects.all()[:26]]}
+        response = self.client.patch(url, too_many_cards, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        # # Comprobamos duplicados
-        # duplicate_cards = {"card_ids": [1,1,2,2,3]}
-        # response = self.client.patch(url, duplicate_cards, format="json")
-        # self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        
-        # LO ZENTIMO S MUCKHO 
+        # 4 Comprobamos duplicados
+        duplicate_cards = {"card_ids": [1,1,2,2,3]}
+        response = self.client.patch(url, duplicate_cards, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
 def test_delete_team_for_user(self):
@@ -173,8 +172,6 @@ def test_delete_team_for_user(self):
     url_no_team = reverse("user-team-view", args=[self.user3.id])
     response = self.client.delete(url_no_team)
     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-    
-    
 
 
 class CardEndpointsTestCase(APITestCase):
