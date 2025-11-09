@@ -5,41 +5,57 @@ from api.models import *
 # Test de los modelos
 # -------------------
 
+
 # Tests de Card
 class CardModelTestCase(TestCase):
 
     def setUp(self):
         # Carta de ejemplo para el resto de tests
         self.card = Card.objects.create(
-            name="Cristiano Ronaldo",
-            country="Portugal",
-            club="Al Nassr",
-            league="Saudi Pro League",
-            position="ST",
+            name="Neymar da Silva Santos Júnior",
+            country="Brazil",
+            club="FC Barcelona",
+            league="Spain Primera Division",
+            position="EI",
             pace=90,
-            shooting=93,
-            passing=82,
-            dribbling=88,
-            defending=35,
-            physical=85,
+            shooting=80,
+            passing=72,
+            dribbling=92,
+            defending=30,
+            physical=57,
+            diving=9,
+            reflexes=11,
+            handling=9,
+            positioning=15,
+            kicking=15,
+            speed=90,
         )
 
     def test_create_card(self):
         # Se comprueba que la carta de ejemplo se ha creado bien
         self.assertEqual(Card.objects.count(), 1)
-        self.assertEqual(self.card.name, "Cristiano Ronaldo")
+        self.assertEqual(self.card.name, "Neymar da Silva Santos Júnior")
         self.assertTrue(self.card.active)
         self.assertIsNotNone(self.card.created_at)
+        print(
+            "✅ test_create_card: PASS - Carta creada correctamente con todos los campos"
+        )
 
     def test_card_string_representation(self):
         # Pruebo el toString
-        self.assertEqual(str(self.card), "Cristiano Ronaldo (ST)")
+        self.assertEqual(str(self.card), "Neymar da Silva Santos Júnior (EI)")
+        print(
+            "✅ test_card_string_representation: PASS - Representación en string correcta"
+        )
 
     def test_card_can_be_deactivated(self):
         # Compruebo que funciona el borrado lógico
         self.card.active = False
         self.card.save()
         self.assertFalse(self.card.active)
+        print(
+            "✅ test_card_can_be_deactivated: PASS - Borrado lógico funcionando correctamente"
+        )
 
 
 # Tests de Team
@@ -58,6 +74,7 @@ class TeamModelTestCase(TestCase):
 
         # 4️⃣ created_at se ha rellenado
         self.assertIsNotNone(team.created_at)
+        print("✅ test_create_empty_team: PASS - Equipo vacío creado correctamente")
 
     def test_add_cards_to_team(self):
         # Compruebo que se pueden añadir cartas al equipo
@@ -65,30 +82,42 @@ class TeamModelTestCase(TestCase):
 
         # Cartas de ejemplo
         card1 = Card.objects.create(
-            name="Messi",
-            country="Argentina",
-            club="Inter Miami",
-            league="MLS",
-            position="ST",
+            name="Neymar da Silva Santos Júnior",
+            country="Brazil",
+            club="FC Barcelona",
+            league="Spain Primera Division",
+            position="EI",
             pace=90,
-            shooting=93,
-            passing=92,
-            dribbling=95,
-            defending=38,
-            physical=65,
+            shooting=80,
+            passing=72,
+            dribbling=92,
+            defending=30,
+            physical=57,
+            diving=9,
+            reflexes=11,
+            handling=9,
+            positioning=15,
+            kicking=15,
+            speed=90,
         )
         card2 = Card.objects.create(
-            name="Ramos",
-            country="Spain",
-            club="Sevilla FC",
-            league="LaLiga",
-            position="CB",
-            pace=70,
-            shooting=60,
-            passing=75,
-            dribbling=65,
-            defending=90,
-            physical=85,
+            name="Neymar da Silva Santos Júnior",
+            country="Brazil",
+            club="FC Barcelona",
+            league="Spain Primera Division",
+            position="EI",
+            pace=90,
+            shooting=80,
+            passing=72,
+            dribbling=92,
+            defending=30,
+            physical=57,
+            diving=9,
+            reflexes=11,
+            handling=9,
+            positioning=15,
+            kicking=15,
+            speed=90,
         )
 
         # Añado las cartas al equipo
@@ -102,14 +131,17 @@ class TeamModelTestCase(TestCase):
 
         # 3️⃣ La relación funciona en los dos sentidos
         self.assertIn(team, card1.teams.all())
+        print(
+            "✅ test_add_cards_to_team: PASS - Cartas añadidas al equipo correctamente"
+        )
 
 
 # Tests de User
 class UserModelTestCase(TestCase):
     def test_create_retrieve_user(self):
-        name = 'villamaravilla'
-        email = 'fake@mail.org'
-        password = 'fakepass'
+        name = "villamaravilla"
+        email = "fake@mail.org"
+        password = "fakepass"
 
         user = User(name=name, email=email, password=password)
         user.save()
@@ -128,7 +160,8 @@ class UserModelTestCase(TestCase):
 
         # 4️⃣ El campo created_at se genera automáticamente
         self.assertIsNotNone(user.created_at)
-        
-        self.assertEqual(user,User.objects.get(pk=userId))
 
-
+        self.assertEqual(user, User.objects.get(pk=userId))
+        print(
+            "✅ test_create_retrieve_user: PASS - Usuario creado y recuperado correctamente"
+        )
