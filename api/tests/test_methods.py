@@ -23,7 +23,7 @@ class CardCalculateOverallRatingTestCase(TestCase):
             handling=87,
             positioning=90,
             kicking=91,
-            speed=61
+            speed=61,
         )
 
         result = card.calculate_overall_rating()
@@ -31,6 +31,9 @@ class CardCalculateOverallRatingTestCase(TestCase):
         # = 21.25 + 21.5 + 17.4 + 13.5 + 9.1 + 3.05 = 85.8 ≈ 86
         expected_ovr = 86
         self.assertEqual(result, expected_ovr)
+        print(
+            "✅ test_calculate_overall_rating_por: PASS - Cálculo OVR para POR correcto"
+        )
 
     def test_calculate_overall_rating_ld(self):
         card = Card.objects.create(
@@ -50,7 +53,7 @@ class CardCalculateOverallRatingTestCase(TestCase):
             handling=11,
             positioning=6,
             kicking=9,
-            speed=88
+            speed=88,
         )
 
         result = card.calculate_overall_rating()
@@ -58,6 +61,9 @@ class CardCalculateOverallRatingTestCase(TestCase):
         # = 21.5 + 15.6 + 12.42 + 12.45 + 9.12 + 7.0 = 78.09 ≈ 78
         expected_ovr = 78
         self.assertEqual(result, expected_ovr)
+        print(
+            "✅ test_calculate_overall_rating_ld: PASS - Cálculo OVR para LD correcto"
+        )
 
     def test_calculate_overall_rating_dfc(self):
         card = Card.objects.create(
@@ -77,7 +83,7 @@ class CardCalculateOverallRatingTestCase(TestCase):
             handling=6,
             positioning=13,
             kicking=10,
-            speed=77
+            speed=77,
         )
 
         result = card.calculate_overall_rating()
@@ -85,6 +91,9 @@ class CardCalculateOverallRatingTestCase(TestCase):
         # = 30.1 + 20.0 + 11.4 + 5.6 + 4.56 + 3.43 = 75.09 ≈ 75
         expected_ovr = 75
         self.assertEqual(result, expected_ovr)
+        print(
+            "✅ test_calculate_overall_rating_dfc: PASS - Cálculo OVR para DFC correcto"
+        )
 
     def test_calculate_overall_rating_li(self):
         card = Card.objects.create(
@@ -104,7 +113,7 @@ class CardCalculateOverallRatingTestCase(TestCase):
             handling=15,
             positioning=6,
             kicking=13,
-            speed=92
+            speed=92,
         )
 
         result = card.calculate_overall_rating()
@@ -112,6 +121,9 @@ class CardCalculateOverallRatingTestCase(TestCase):
         # = 23.0 + 16.0 + 13.5 + 12.3 + 9.0 + 6.9 = 80.7 ≈ 81
         expected_ovr = 81
         self.assertEqual(result, expected_ovr)
+        print(
+            "✅ test_calculate_overall_rating_li: PASS - Cálculo OVR para LI correcto"
+        )
 
     def test_calculate_overall_rating_mcd(self):
         card = Card.objects.create(
@@ -131,7 +143,7 @@ class CardCalculateOverallRatingTestCase(TestCase):
             handling=15,
             positioning=14,
             kicking=12,
-            speed=68
+            speed=68,
         )
 
         result = card.calculate_overall_rating()
@@ -139,6 +151,9 @@ class CardCalculateOverallRatingTestCase(TestCase):
         # = 20.5 + 17.6 + 13.86 + 11.25 + 8.04 + 7.0 = 78.25 ≈ 78
         expected_ovr = 78
         self.assertEqual(result, expected_ovr)
+        print(
+            "✅ test_calculate_overall_rating_mcd: PASS - Cálculo OVR para MCD correcto"
+        )
 
     def test_calculate_overall_rating_mco(self):
         card = Card.objects.create(
@@ -158,7 +173,7 @@ class CardCalculateOverallRatingTestCase(TestCase):
             handling=7,
             positioning=6,
             kicking=12,
-            speed=68
+            speed=68,
         )
 
         result = card.calculate_overall_rating()
@@ -166,6 +181,9 @@ class CardCalculateOverallRatingTestCase(TestCase):
         # = 22.0 + 17.82 + 14.6 + 10.8 + 6.2 + 2.56 = 73.98 ≈ 74
         expected_ovr = 74
         self.assertEqual(result, expected_ovr)
+        print(
+            "✅ test_calculate_overall_rating_mco: PASS - Cálculo OVR para MCO correcto"
+        )
 
     def test_calculate_overall_rating_mi(self):
         card = Card.objects.create(
@@ -185,7 +203,7 @@ class CardCalculateOverallRatingTestCase(TestCase):
             handling=1,
             positioning=1,
             kicking=1,
-            speed=79
+            speed=79,
         )
 
         result = card.calculate_overall_rating()
@@ -193,6 +211,9 @@ class CardCalculateOverallRatingTestCase(TestCase):
         # = 20.25 + 18.92 + 16.6 + 11.4 + 5.8 + 3.04 = 76.01 ≈ 76
         expected_ovr = 76
         self.assertEqual(result, expected_ovr)
+        print(
+            "✅ test_calculate_overall_rating_mi: PASS - Cálculo OVR para MI correcto"
+        )
 
     def test_calculate_overall_rating_mco(self):
         card = Card.objects.create(
@@ -212,7 +233,7 @@ class CardCalculateOverallRatingTestCase(TestCase):
             handling=6,
             positioning=14,
             kicking=4,
-            speed=73
+            speed=73,
         )
 
         result = card.calculate_overall_rating()
@@ -220,6 +241,9 @@ class CardCalculateOverallRatingTestCase(TestCase):
         # = 20.5 + 17.82 + 15.4 + 11.1 + 7.0 + 4.64 = 76.46 ≈ 76
         expected_ovr = 76
         self.assertEqual(result, expected_ovr)
+        print(
+            "✅ test_calculate_overall_rating_mco: PASS - Cálculo OVR para MCO correcto"
+        )
 
     def test_calculate_overall_rating_sd(self):
         card = Card.objects.create(
@@ -239,7 +263,7 @@ class CardCalculateOverallRatingTestCase(TestCase):
             handling=10,
             positioning=13,
             kicking=6,
-            speed=52
+            speed=52,
         )
 
         result = card.calculate_overall_rating()
@@ -247,6 +271,9 @@ class CardCalculateOverallRatingTestCase(TestCase):
         # = 21.25 + 17.16 + 17.4 + 7.95 + 5.9 + 1.44 = 71.1 ≈ 71
         expected_ovr = 71
         self.assertEqual(result, expected_ovr)
+        print(
+            "✅ test_calculate_overall_rating_sd: PASS - Cálculo OVR para SD correcto"
+        )
 
     def test_calculate_overall_rating_ei(self):
         card = Card.objects.create(
@@ -266,7 +293,7 @@ class CardCalculateOverallRatingTestCase(TestCase):
             handling=14,
             positioning=12,
             kicking=6,
-            speed=90
+            speed=90,
         )
 
         result = card.calculate_overall_rating()
@@ -274,6 +301,9 @@ class CardCalculateOverallRatingTestCase(TestCase):
         # = 27.0 + 21.25 + 14.04 + 10.95 + 9.0 = 82.24 ≈ 82
         expected_ovr = 82
         self.assertEqual(result, expected_ovr)
+        print(
+            "✅ test_calculate_overall_rating_ei: PASS - Cálculo OVR para EI correcto"
+        )
 
     def test_calculate_overall_rating_dc(self):
         card = Card.objects.create(
@@ -293,7 +323,7 @@ class CardCalculateOverallRatingTestCase(TestCase):
             handling=9,
             positioning=14,
             kicking=13,
-            speed=68
+            speed=68,
         )
 
         result = card.calculate_overall_rating()
@@ -301,6 +331,9 @@ class CardCalculateOverallRatingTestCase(TestCase):
         # = 24.9 + 13.8 + 14.94 + 10.5 + 9.0 + 1.55 = 74.69 ≈ 75
         expected_ovr = 75
         self.assertEqual(result, expected_ovr)
+        print(
+            "✅ test_calculate_overall_rating_dc: PASS - Cálculo OVR para DC correcto"
+        )
 
     def test_calculate_overall_rating_maximum_stats(self):
         card = Card.objects.create(
@@ -320,12 +353,15 @@ class CardCalculateOverallRatingTestCase(TestCase):
             handling=99,
             positioning=99,
             kicking=99,
-            speed=99
+            speed=99,
         )
-        
+
         result = card.calculate_overall_rating()
         expected_ovr = 99
         self.assertEqual(result, expected_ovr)
+        print(
+            "✅ test_calculate_overall_rating_maximum_stats: PASS - Cálculo OVR con stats máximos correcto"
+        )
 
     def test_calculate_overall_rating_minimum_stats(self):
         card = Card.objects.create(
@@ -345,12 +381,15 @@ class CardCalculateOverallRatingTestCase(TestCase):
             handling=1,
             positioning=1,
             kicking=1,
-            speed=1
+            speed=1,
         )
-        
+
         result = card.calculate_overall_rating()
         self.assertGreaterEqual(result, 1)
         self.assertLessEqual(result, 99)
+        print(
+            "✅ test_calculate_overall_rating_minimum_stats: PASS - Cálculo OVR con stats mínimos correcto"
+        )
 
     def test_calculate_overall_rating_returns_integer(self):
         card = Card.objects.create(
@@ -370,8 +409,11 @@ class CardCalculateOverallRatingTestCase(TestCase):
             handling=1,
             positioning=1,
             kicking=1,
-            speed=1
+            speed=1,
         )
-        
+
         result = card.calculate_overall_rating()
         self.assertIsInstance(result, int)
+        print(
+            "✅ test_calculate_overall_rating_returns_integer: PASS - OVR devuelve entero como se espera"
+        )

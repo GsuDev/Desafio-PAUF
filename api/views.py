@@ -249,11 +249,6 @@ class UserTeamView(generics.GenericAPIView):
                 mc += 1
             elif pos in ["EI","ED","DC","SD"]:
                 st += 1
-            
-        print(f"Defensas {df}")
-        print(f"MedioCentro {mc}")
-        print(f"Delantero {st}")
-        print(f"Portero {gk}")
         
         if gk not in range(2,4):
             success = False

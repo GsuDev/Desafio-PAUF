@@ -5,6 +5,7 @@ from api.models import *
 # Test de los modelos
 # -------------------
 
+
 # Tests de Card
 class CardModelTestCase(TestCase):
 
@@ -36,16 +37,25 @@ class CardModelTestCase(TestCase):
         self.assertEqual(self.card.name, "Neymar da Silva Santos Júnior")
         self.assertTrue(self.card.active)
         self.assertIsNotNone(self.card.created_at)
+        print(
+            "✅ test_create_card: PASS - Carta creada correctamente con todos los campos"
+        )
 
     def test_card_string_representation(self):
         # Pruebo el toString
         self.assertEqual(str(self.card), "Neymar da Silva Santos Júnior (EI)")
+        print(
+            "✅ test_card_string_representation: PASS - Representación en string correcta"
+        )
 
     def test_card_can_be_deactivated(self):
         # Compruebo que funciona el borrado lógico
         self.card.active = False
         self.card.save()
         self.assertFalse(self.card.active)
+        print(
+            "✅ test_card_can_be_deactivated: PASS - Borrado lógico funcionando correctamente"
+        )
 
 
 # Tests de Team
@@ -64,6 +74,7 @@ class TeamModelTestCase(TestCase):
 
         # 4️⃣ created_at se ha rellenado
         self.assertIsNotNone(team.created_at)
+        print("✅ test_create_empty_team: PASS - Equipo vacío creado correctamente")
 
     def test_add_cards_to_team(self):
         # Compruebo que se pueden añadir cartas al equipo
@@ -120,14 +131,17 @@ class TeamModelTestCase(TestCase):
 
         # 3️⃣ La relación funciona en los dos sentidos
         self.assertIn(team, card1.teams.all())
+        print(
+            "✅ test_add_cards_to_team: PASS - Cartas añadidas al equipo correctamente"
+        )
 
 
 # Tests de User
 class UserModelTestCase(TestCase):
     def test_create_retrieve_user(self):
-        name = 'villamaravilla'
-        email = 'fake@mail.org'
-        password = 'fakepass'
+        name = "villamaravilla"
+        email = "fake@mail.org"
+        password = "fakepass"
 
         user = User(name=name, email=email, password=password)
         user.save()
@@ -146,5 +160,8 @@ class UserModelTestCase(TestCase):
 
         # 4️⃣ El campo created_at se genera automáticamente
         self.assertIsNotNone(user.created_at)
-        
-        self.assertEqual(user,User.objects.get(pk=userId))
+
+        self.assertEqual(user, User.objects.get(pk=userId))
+        print(
+            "✅ test_create_retrieve_user: PASS - Usuario creado y recuperado correctamente"
+        )
