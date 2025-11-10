@@ -253,7 +253,7 @@ def test_delete_team_for_user(self):
     print(
         "✅ test_delete_team_for_user: PASS - Eliminación de equipo funcionando correctamente"
     )
-
+    
 
 class CardEndpointsTestCase(APITestCase):
     def setUp(self):
@@ -400,3 +400,5 @@ class CardEndpointsTestCase(APITestCase):
         print(
             "✅ test_destroy_card: PASS - Eliminación lógica de carta funcionando correctamente"
         )
+        
+

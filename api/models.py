@@ -183,14 +183,64 @@ class Card(models.Model):
 
 
 class Team(models.Model):
+    
+    # Datos básicos
     name = models.CharField(max_length=100)
     cards = models.ManyToManyField(Card, blank=True, related_name="teams")
+    media = models.CharField(blank=True ,max_length=5)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
-
-
+    
+   # Mi intención era:
+   # 1º sacar cada carta comprobar que estaba activa o no
+   # 2º sumar dentro del if las medias de los jugadores y sumar cuantos jugadores estaban sumando sus medias
+   # 3º sacar la media
+   
+   # Problema: no puedo sacar la carta porque no puedo coger las cartas del equipo de un usuario 
+"""   
+    def calculate_media_rating(self):
+        
+            # Fórmula para calcular la media total: 
+            # Media del equipo = suma(medias jugadores activos) / nº jugadores activos
+            
+        # En nuestro desafío solo aceptamos jugadores activos ya que hemos dado por hecho que los 
+        # no activos son jugadores que ya no pertenecen al juego
+        # Caso: Maradona quitaron su carta por licencias de imagen, etc ...
+        
+        user_team = User.objects.get(id=self.user1.id).team #Sacamos el equipo de un usuario
+        user_cards = [user_team.cards]                      # Sacamos las cartas del equipo
+        ratings = 0                                         # Variable que recoge la suma de todas las valoraciones de los jugadores
+        team_rating = 0                                     # Media Total del equipo
+        players = 0                                         # Total de jugadores activos
+        
+        for card in user_cards:
+            c = card.active
+        #     if c == True:
+        #         ratings += card.overall_rating      #Sumamos la media de la carta
+        #         players += 1                        #sacamos el numero de jugadores activos
+                
+        # team_rating = round(ratings / players)
+        
+        # Según el número que nos ha dado la fórmula le asignamos una 
+        # valoración por estrellas (que son asteríscos)
+        # if team_rating in (0,20):
+        #     return "*"
+        # elif team_rating in (20,40):
+        #     return "**"
+        # elif team_rating in (40,60):
+        #     return "***"
+        # elif team_rating in (60,80):
+        #     return "****"
+        # elif team_rating in (80,101):
+        #     return "*****"
+        
+    
+    def save(self, *args, **kwargs):
+        self.media = self.calculate_media_rating()
+        super().save(*args, **kwargs)
+"""
 class User(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)

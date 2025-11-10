@@ -72,7 +72,7 @@ class TeamSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Team
-        fields = ["id", "name", "created_at", "cards", "card_ids"]
+        fields = ["id", "name", "created_at", "cards", "card_ids","media"]
         read_only_fields = ["id", "created_at"]
 
     def get_cards(self, obj):

@@ -1,5 +1,13 @@
+from typing import Self
 from django.test import TestCase
 from api.models import *
+from contextlib import redirect_stdout
+import io
+from django.core.management import call_command
+from rest_framework.test import APITestCase
+from rest_framework import status
+from django.urls import reverse
+from api.serializers import *
 
 
 class CardCalculateOverallRatingTestCase(TestCase):
@@ -417,3 +425,97 @@ class CardCalculateOverallRatingTestCase(TestCase):
         print(
             "✅ test_calculate_overall_rating_returns_integer: PASS - OVR devuelve entero como se espera"
         )
+"""
+class MediaTestCase(APITestCase):
+    def setUp(self):
+        self.user1 = User.objects.create(name="Messi", email="messi@example.com")
+        self.user2 = User.objects.create(name="Cristiano", email="cr7@example.com")
+        self.user3 = User.objects.create(name="Raul", email="raul7@example.com")
+        # Ejecutamos el comando pero no mostramos la salida
+        f = io.StringIO()
+        with redirect_stdout(f):
+            call_command("load_cards", limit=180)
+     
+    # Caso Bueno      
+    def test_calculate_media_rating(self):
+        # Creamos un equipo válido
+        valid_team = [
+            42,
+            53,
+            51,
+            15,
+            22,
+            43,
+            64,
+            69,
+            79,
+            89,
+            12,
+            34,
+            97,
+            33,
+            113,
+            10,
+            44,
+            50,
+            65,
+            1,
+            2,
+            11,
+            48,
+            180,
+        ]
+        url = reverse("user-team-view", args=[self.user3.id])
+        data = {"name": "Initial Team", "card_ids": valid_team}
+        response = self.client.post(url, data, format="json", args=[self.user3.id])
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+    # Caso Malo (No tiene 2 porteros)     
+    def test_calculate_media_rating(self):
+        # Creamos un equipo válido
+        invalid_team = [
+            53,
+            51,
+            15,
+            22,
+            43,
+            64,
+            69,
+            79,
+            89,
+            12,
+            34,
+            97,
+            33,
+            113,
+            10,
+            44,
+            50,
+            65,
+            1,
+            2,
+            11,
+            48,
+            180,
+        ]
+        url = reverse("user-team-view", args=[self.user3.id])
+        data = {"name": "Initial Team", "card_ids": invalid_team}
+        response = self.client.post(url, data, format="json", args=[self.user3.id])
+        
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        
+    # Caso Malo (No tiene equipo)     
+    def test_calculate_media_rating(self):
+        invalid_team = []
+        url = reverse("user-team-view", args=[self.user3.id])
+        data = {"name": "Initial Team", "card_ids": invalid_team}
+        response = self.client.post(url, data, format="json", args=[self.user3.id])
+        
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        
+    
+        
+        
+
+"""

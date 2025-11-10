@@ -184,6 +184,7 @@ class UserTeamView(generics.GenericAPIView):
                 {"error": position_limits["message"]},
                 status=status.HTTP_400_BAD_REQUEST
             )
+            
 
         team = serializer.save()
 
