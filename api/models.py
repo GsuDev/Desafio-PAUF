@@ -42,6 +42,7 @@ class Card(models.Model):
     speed = models.IntegerField()
 
     # Otros campos
+    team_mean = models.FloatField(default=0)
     active = models.BooleanField(default=True)
     overall_rating = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

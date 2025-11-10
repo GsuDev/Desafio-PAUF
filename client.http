@@ -234,3 +234,10 @@ Accept: application/json
 ### 🔴 (Opcional) Eliminar el equipo del usuario
 DELETE http://localhost:8000/users/13/team/
 Accept: application/json
+
+
+
+### -------------
+
+GET http://127.0.0.1:8000/users/300/team/avg
+Accept: application/json

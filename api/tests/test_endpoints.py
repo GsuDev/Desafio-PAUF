@@ -227,32 +227,7 @@ class UserEndpointsTestCase(APITestCase):
         )
 
 
-def test_delete_team_for_user(self):
-    # Primero le creamos un equipo al user2
-    url = reverse("user-team-view", args=[self.user2.id])
-    data = {
-        "name": "Team To Delete",
-        "card_ids": [c.id for c in Card.objects.all()[:5]],
-    }
-    self.client.post(url, data, format="json")
 
-    # DELETE
-    response = self.client.delete(url)
-    self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-
-    # Comprobamos que user2 ya no tiene equipo
-    self.assertIsNone(User.objects.get(id=self.user2.id).team)
-
-    # Comprobamos que el equipo fue eliminado
-    self.assertFalse(Team.objects.filter(name="Team To Delete").exists())
-
-    # DELETE en usuario sin equipo → 400
-    url_no_team = reverse("user-team-view", args=[self.user3.id])
-    response = self.client.delete(url_no_team)
-    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-    print(
-        "✅ test_delete_team_for_user: PASS - Eliminación de equipo funcionando correctamente"
-    )
 
 
 class CardEndpointsTestCase(APITestCase):

@@ -22,4 +22,5 @@ urlpatterns = [
         name="team-retrieve-update-destroy",
     ),
     path("users/<int:pk>/team/", views.UserTeamView.as_view(), name="user-team-view"),
+    path("users/<int:pk>/team/avg", views.UserTeamMeanView.as_view(), name="user-team-avg"),
 ]
